@@ -5,13 +5,14 @@ const Bread = require('../models/bread.js')
 
 //index
 breads.get('/', (req, res) => {
-    res.render('Index',
+    Bread.find()
+    .then(foundBreads => {
+        res.render('Index',
         {
-            breads: Bread,
+            breads: foundBreads,
             title: 'Index Page'
-        }
-    )
-    //res.send(Bread)
+        })
+    })
 })
 
 //new
@@ -28,28 +29,29 @@ breads.get('/:indexArray/edit', (req, res) => {
 })
 
 //show
-breads.get('/:arrayIndex', (req, res) => {
-    if(Bread[req.params.arrayIndex]){
+breads.get('/:id', (req, res) => {
+    Bread.findById(req.params.id)
+    .then(foundBread => {
         res.render('Show', {
-            bread: Bread[req.params.arrayIndex],
-            index: req.params.arrayIndex
-        })  
-    } else {
+            bread: foundBread
+        })
+    })
+    .catch(err => {
         res.render('error404')
-    }
+    })
 })
 
 //create
 breads.post('/', (req, res) => {
     if(!req.body.image) {
-        req.body.image = 'https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'
+        req.body.image = undefined
     }
     if(req.body.hasGluten === 'on'){
-        req.body.hasGluten === 'true'
+        req.body.hasGluten = true
     } else {
-        req.body.hasGlten === 'false'
+        req.body.hasGlten = false
     }
-    Bread.push(req.body)
+    Bread.create(req.body)
     res.redirect('/breads')
 })
 
