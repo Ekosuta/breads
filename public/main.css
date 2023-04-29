@@ -7,3 +7,11 @@ img {
     display: block;
     margin: auto;
 }
+
+#bread-names {
+    list-style-type: disc;
+}
+
+#baked {
+    padding-left: 15px;
+}
