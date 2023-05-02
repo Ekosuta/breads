@@ -11,7 +11,7 @@ const breadSchema = new Schema({
   hasGluten: Boolean,
   image: {
     type: String,
-    default: 'http://placehold.it/500x500.png'
+    default: '/images/default-bread.jpg'
   },
   baker: {
     type: Schema.Types.ObjectId,
@@ -21,7 +21,7 @@ const breadSchema = new Schema({
 
 //helper method
 breadSchema.methods.getBakedBy = function() {
-  return `${this.name} was baked with love by ${this.baker}`
+  return `${this.name} was baked with love by ${this.baker.name}, who has been with us since ${this.baker.startDate.getFullYear()}`
 }
 
 //model and export

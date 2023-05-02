@@ -6,13 +6,17 @@ const Baker = require('../models/baker.js')
 
 //index
 breads.get('/', (req, res) => {
-    Bread.find()
-    .then(foundBreads => {
-        res.render('Index',
-        {
-            breads: foundBreads,
-            title: 'Index Page'
-        })
+    Baker.find()
+    .then(foundBakers => {
+        Bread.find()
+        .then(foundBreads => {
+            res.render('Index',
+            {
+                breads: foundBreads,
+                title: 'Index Page',
+                bakers: foundBakers
+            })
+        })    
     })
 })
 
@@ -28,20 +32,24 @@ breads.get('/new', (req, res) => {
 
 //edit
 breads.get('/:id/edit', (req, res) => {
-    Bread.findById(req.params.id)
-    .then(foundBread => {
-        res.render('Edit', {
-            bread: foundBread
-        })
+    Baker.find()
+    .then(foundBakers => {
+        Bread.findById(req.params.id)
+        .then(foundBread => {
+            res.render('Edit', {
+                bread: foundBread,
+                bakers: foundBakers
+            })
+        })    
     })
+    
 })
 
 //show
 breads.get('/:id', (req, res) => {
     Bread.findById(req.params.id)
+    .populate('baker')
     .then(foundBread => {
-        const bakedBy = foundBread.getBakedBy()
-        console.log(bakedBy)
         res.render('Show', {
             bread: foundBread
         })
@@ -97,13 +105,7 @@ breads.put('/:id', (req, res) => {
     })
 })
 
-breads.get('/data/baker', (req, res) => {
-    Bread.updateMany({baker: "Monica"})
-    .then(updatedBreads => {
-        res.redirect('/breads')
-    })
-})
-
+//seed
 breads.get('/data/seed', (req, res) => {
     Bread.insertMany([
         {

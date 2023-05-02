@@ -2,22 +2,31 @@ const React = require('react')
 const Default = require('./layouts/default')
 const { link } = require('fs')
 
-function Index({breads, title}) {
+function Index({breads, title, bakers}) {
     return(
         <Default title={title}>
             <h2>Index Page</h2>
-            {/*<p>I have {breads[0].name} bread!</p>*/}
+            <h3>Bakers</h3>
             <ul>
                 {
-                    breads.map((bread, index) => {
-                        return (<li id="bread-names" key={bread.id}>
-                            <a href={`/breads/${bread.id}`}>
-                            {bread.name}
-                            </a>
-                                <li id="baked">
-                                    {bread.getBakedBy()}
-                                </li>
-                        </li>)
+                    bakers.map((baker) => {
+                        return (
+                            <li id="index-names" key={baker.id}>
+                                <a href={`/bakers/${baker.id}`}>{baker.name}</a>
+                            </li>
+                        )
+                    })
+                }
+            </ul>
+            <h3>Breads</h3>
+            <ul>
+                {
+                    breads.map((bread) => {
+                        return (
+                            <li id="index-names" key={bread.id}>
+                                <a href={`/breads/${bread.id}`}>{bread.name}</a>
+                            </li>
+                        )
                     })
                 }
             </ul>
